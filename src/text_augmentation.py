@@ -10,6 +10,13 @@ warnings.filterwarnings("ignore")
 
 class AugmenText:
     def __init__(self, src_lang, target_langs, translation_url, special_tokens=None):
+        '''
+        Text augmentation utility class
+        :param src_lang: str
+        :param target_langs: list[str]
+        :param translation_url: str
+        :param special_tokens: list[str]
+        '''
         self.src_lang = src_lang
         self.target_langs = target_langs
         self.special_tokens = special_tokens
@@ -96,9 +103,6 @@ class AugmenText:
                 temp_df[column].fillna(value, inplace=True)
 
             all_augmentations[all_augmentations.index == index] = temp_df
-
-
-
         return all_augmentations
 
     def calc_augmentation_score(

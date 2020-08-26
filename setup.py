@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="AugmenText",
+    name="text_augmentation",
     version="0.0.1",
     author="erezsc",
     author_email="erezsc@rnd-hub.com",
@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pypa/sampleproject",
-    py_modules=["text_augmentaion"],
+    py_modules=["text_augmentation"],
     package_dir={'': 'src'},
     classifiers=[
         "Programming Language :: Python :: 3",

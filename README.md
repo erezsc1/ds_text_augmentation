@@ -5,7 +5,15 @@ New models can be saved in that directory, and update translator_config.json acc
 
 ## Features
 - Utilizing NMT models from [huggingface.co](https://huggingface.co/models), trained by [Helsinky-NLP](https://github.com/Helsinki-NLP)
-- Cosine Similarity to clean bad augmentations (can be overriden with custom metric) 
+- Cosine Similarity to clean bad augmentations (can be overriden with custom metric)
+
+## Installation
+```bash
+git clone repository
+cd repository
+python3 setup.py bdist_wheel
+pip3 install /dist/text_augmentation-0.0.1-py3-none-any.whl
+``` 
 ## Example
 
 ```python
@@ -53,10 +61,10 @@ will yield the following data-augmented dataframe:
 |---:|:-------------------------------------------------------|--------:|----------:|----------:|:-----------|------------------------:|
 |  0 | חנות המכולת של סלים                                    |      -1 |         0 |         2 | src        |                1        |
 |  0 | "המכולת של סלים."                                      |      -1 |         0 |         2 | arb        |                0.814796 |
-|  0 | □ חנויות המזון של סלים                                 |      -1 |         0 |         2 | de         |                0.281021 |
-|  0 | [חנות כלי-הקיבול של סלים]                              |      -1 |         0 |         2 | sv         |                0.611097 |
+|  0 |  חנויות המזון של סלים                                 |      -1 |         0 |         2 | de         |                0.281021 |
+|  0 | חנות כלי-הקיבול של סלים                              |      -1 |         0 |         2 | sv         |                0.611097 |
 |  1 | אתמול הלכתי עם משפחתי לקניון לקנות נעליים חדשות        |      -1 |         0 |         2 | src        |                1        |
 |  1 | ואז משפחתי ואני הלכנו לקניון לקנות נעליים חדשות.       |      -1 |         0 |         2 | arb        |                0.385984 |
 |  1 | הלכתי לקניון עם משפחתי לקנות נעליים חדשות.             |      -1 |         0 |         2 | de         |                0.829918 |
-|  1 | □ המשפחה שלי ואני הלכנו לקניון כדי לקנות נעליים חדשות. |      -1 |         0 |         2 | fi         |                0.241974 |
-|  1 | □ הלכתי עם משפחתי לקנות נעליים חדשות                   |      -1 |         0 |         2 | sv         |                0.7681   |
+|  1 |  המשפחה שלי ואני הלכנו לקניון כדי לקנות נעליים חדשות. |      -1 |         0 |         2 | fi         |                0.241974 |
+|  1 |  הלכתי עם משפחתי לקנות נעליים חדשות                   |      -1 |         0 |         2 | sv         |                0.7681   |

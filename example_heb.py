@@ -1,6 +1,7 @@
 import pandas as pd
 from src.text_augmentation import AugmenText
 
+
 if __name__ == '__main__':
     TRANSLATION_URL = "http://0.0.0.0:8000"  # address of 'Miriam' translation service
 

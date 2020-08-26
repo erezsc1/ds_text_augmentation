@@ -1,17 +1,19 @@
 import string
-import pprint
 import warnings
 import pandas as pd
-from translator import Translator
 from sklearn.feature_extraction.text import TfidfVectorizer
+from translator_client import TranslatorClient as Translator
+
 
 warnings.filterwarnings("ignore")
 
+
 class AugmenText:
-    def __init__(self, src_lang, target_langs, special_tokens=None):
+    def __init__(self, src_lang, target_langs, translation_url, special_tokens=None):
         self.src_lang = src_lang
         self.target_langs = target_langs
         self.special_tokens = special_tokens
+        self.translation_url = translation_url
 
     def augment_text(
             self,
@@ -37,20 +39,30 @@ class AugmenText:
         '''
         assert "text" in query_df.columns
         all_augmentations = query_df
-        query_df["lang_aug"] = "src"
+        query_df["lang_aug"] = "AAA"
         for lang in self.target_langs:
             try:
-                translator_front = Translator(source_lang=self.src_lang, target_lang=lang, special_tokens=self.special_tokens)
+                translator_front = Translator(
+                    src_lang=self.src_lang,
+                    tgt_lang=lang,
+                    service_url=self.translation_url,
+                    special_tokens=self.special_tokens
+                )
             except NotImplementedError:
                 print(f"translation {self.src_lang} --> {lang} does not exist.")
                 continue
             try:
-                translator_back = Translator(source_lang=lang, target_lang=self.src_lang, special_tokens=self.special_tokens)
+                translator_back = Translator(
+                    src_lang=lang,
+                    tgt_lang=self.src_lang,
+                    service_url=self.translation_url,
+                    special_tokens=self.special_tokens
+                )
             except NotImplementedError:
                 print(f"translation {lang} --> {self.src_lang} does not exist.")
                 continue
             trans_text = translator_front.translate(query_df["text"])
-            aug_text = translator_back.translate(trans_text["tgt_text"])
+            aug_text = translator_back.translate(trans_text)
             cur_augmentations = pd.DataFrame(
                 columns=[
                     "lang_aug",
@@ -58,15 +70,16 @@ class AugmenText:
                     "backtranslation_score"
                 ]
             )
-            cur_augmentations["text"] = aug_text["tgt_text"]
+            cur_augmentations["text"] = aug_text
             cur_augmentations["lang_aug"] = lang
-
-            del translator_front
-            del translator_back
 
             all_augmentations = pd.concat([all_augmentations, cur_augmentations])
 
-        all_augmentations.sort_index(inplace=True)
+        # reordering
+        all_augmentations["index"] = all_augmentations.index
+        all_augmentations.sort_values(by=['index', "lang_aug"], ascending=[True, True], inplace=True)
+        all_augmentations.replace("AAA", "src", inplace=True)
+        del all_augmentations["index"]
 
         unique_index_list = list(set(all_augmentations.index))
         for index in unique_index_list:
@@ -83,6 +96,8 @@ class AugmenText:
                 temp_df[column].fillna(value, inplace=True)
 
             all_augmentations[all_augmentations.index == index] = temp_df
+
+
 
         return all_augmentations
 

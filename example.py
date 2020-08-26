@@ -1,13 +1,16 @@
 import pprint
 import pandas as pd
-from text_augmentation import AugmenText
+from src.text_augmentation import AugmenText
 
 
 if __name__ == '__main__':
     query_list_heb = [
         "חנות המכולת של סלים",
+        "לך תחפש את החברים שלך",
         "אתמול בבוקר יוסי ומירב הלכו לבית הספר. שם הם פגשו את חבריהם לאחר שלא ראו אותם הרבה זמן עקב הקורונה"
     ]
+
+    print("start")
 
     target_langs = [
         "fi",
@@ -28,9 +31,18 @@ if __name__ == '__main__':
         "dummy_2" : 2
     })
 
-    ta = AugmenText("heb", target_langs, special_tokens=None)
+    TRANSLATION_URL = "http://0.0.0.0:8000"
 
-    augmentations_heb = ta.augment_text(query_df_heb,similiarity_check=False,keep_score_threshold=0.1)
+
+    ta = AugmenText(
+        "heb",
+        target_langs,
+        special_tokens=None,
+        translation_url=TRANSLATION_URL
+    )
+
+
+    augmentations_heb = ta.augment_text(query_df_heb,similiarity_check=True,keep_score_threshold=0.1)
     #----------------------------------------------------#
 
 
@@ -62,8 +74,8 @@ if __name__ == '__main__':
     })
 
 
-    ta = AugmenText("arb", target_langs)
-    augmentations_arb = ta.augment_text(query_arb_df,similiarity_check=False,keep_score_threshold=0.1)
+    ta = AugmenText("arb", target_langs, translation_url=TRANSLATION_URL)
+    augmentations_arb = ta.augment_text(query_arb_df,similiarity_check=True,keep_score_threshold=0.2)
 
     print("Augmentations")
     print("# -------- HEB -------- #")

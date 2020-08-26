@@ -1,2 +1,3 @@
 pandas==1.0.5
-miriam_translator
+translator_client
+scikit-learn

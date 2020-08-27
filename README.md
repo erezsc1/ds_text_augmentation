@@ -18,7 +18,7 @@ pip3 install /dist/text_augmentation-0.0.1-py3-none-any.whl
 
 ```python
 import pandas as pd
-from src.text_augmentation import AugmenText
+from text_augmentation import AugmenText
 
 
 if __name__ == '__main__':
@@ -41,8 +41,7 @@ if __name__ == '__main__':
         "fi",
         "de",
         "arb",
-        "sv",
-        
+        "sv",   
     ]
 
     ta = AugmenText(
@@ -52,8 +51,11 @@ if __name__ == '__main__':
         translation_url=TRANSLATION_URL
     )
 
-    augmentations_heb = ta.augment_text(query_df_heb, similiarity_check=True, keep_score_threshold=0.1)
-
+    augmentations_heb = ta.augment_text(
+            query_df=query_df_heb, 
+            similiarity_check=True,  # clean bad augmentations using threshold 
+            keep_score_threshold=0.1  # augmentations similarity score keep threshold
+    )
 ```
 will yield the following data-augmented dataframe:
 
